@@ -15,7 +15,7 @@ class Config(object):
     ROLES = {"Admin": "full granted access", 
              "Admin-Editor": "allowed to edit some db tables", 
              "Admin-Analyse-Only": "not allowed to edit any db-data", 
-             "User": "user-rolw"}
+             "User": "user-role"}
 
 
     # db setup

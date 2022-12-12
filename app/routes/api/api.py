@@ -43,7 +43,7 @@ def update_sensor_data(current_user, sensor_id):
             jsonify({"message": "Wrong Format! Possibly used wrong values!", "http-code": "406"}),
             HTTP_406_NOT_ACCEPTABLE)
 
-    data = {"message": "Sensor-Data updated!", "http-code": "201"}
+    data = {"message": "Sensor-Data updated!"}
 
     return make_response(jsonify(data), HTTP_201_CREATED)  # the server returns a response with the http-code 201
 

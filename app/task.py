@@ -3,7 +3,7 @@ from rq import get_current_job
 from app import db, create_app, mail
 from .models import Device, Task
 from flask_mail import Message
-import ipinfo
+
 
 
 
@@ -31,13 +31,7 @@ def get_ip_geo_loc(client_ip):
 
             ip_query = Device.query.filter_by(ip=client_ip).first()
 
-                #handler = ipinfo.getHandler(app.config["IPINFO_API_KEY"])
-                #details = handler.getDetails("192.168.178.109")
-        
-                #print(details.all)
-            ip_query.country = "hund" #details.country
-                #ip_query.city = details.city
-                #ip_query.region = details.region
+            ip_query.country = "hund" 
 
             db.session.commit()
     except Exception as e:
