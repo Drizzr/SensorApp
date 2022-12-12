@@ -30,7 +30,7 @@ Now you can start the backend by the following command (make sure to run this co
 python3 main.py
 ````
 
-then you have to create all the role entries in your database. run the following command to do so:
+Then you have to create all the role entries in your database. Run the following command to do so (make sure to run the server in background while doing this):
 ````
 python3 db_querys.py
 ````
@@ -58,4 +58,3 @@ __The Website also comes with an custom admin-panel built on top of Flask-Admin:
 ![Home - Admin](https://user-images.githubusercontent.com/76044729/206853178-5bfca8ec-a586-4796-8b93-f503c57d9642.jpg)
 
 
-__*This website is not commercially used!__
