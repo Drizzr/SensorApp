@@ -58,3 +58,4 @@ __The Website also comes with an custom admin-panel built on top of Flask-Admin:
 ![Home - Admin](https://user-images.githubusercontent.com/76044729/206853178-5bfca8ec-a586-4796-8b93-f503c57d9642.jpg)
 
 
+__*This webiste is not commercially used!__s
