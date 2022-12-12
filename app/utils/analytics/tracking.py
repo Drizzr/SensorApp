@@ -14,7 +14,7 @@ def tracking(view=True):
     date = time[:10]
     client_ip = request.environ['REMOTE_ADDR']
     ctx = _request_ctx_stack.top
-    query = DayAnalytics.query.filter_by(date=date).first()
+    query = DayAnalytics.query.filter_by(date=date).first()#
 
     ip_query = Device.query.filter_by(ip=client_ip).first()
 
@@ -45,7 +45,6 @@ def tracking(view=True):
         
         device_day_calls = DeviceDayCalls.query.filter_by(date=query.date, device_ip=ip_query.id).first()
         if not device_day_calls:
-            query.unique_users += 1
             device_day_calls = DeviceDayCalls(date=query.date, device_ip=ip_query.id, view_calls = 0, api_calls= 0)
             db.session.add(device_day_calls)
         if view:
@@ -58,6 +57,7 @@ def tracking(view=True):
             query.authorized_view_calls += 1
             user_day_calls = UserDayCalls.query.filter_by(date=query.date, user_id=current_user.id).first()
             if not user_day_calls:
+                query.unique_users += 1
                 user_day_calls = UserDayCalls(date = query.date, user_id = current_user.id, view_calls = 0, api_calls= 0)
                 db.session.add(user_day_calls)
             if view:

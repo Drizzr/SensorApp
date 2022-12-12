@@ -122,7 +122,7 @@ def create_app(developing=True):
         flash("You have to be logged in to access this page.", category="error")
         # instead of using request.path to prevent Open Redirect Vulnerability
         next_url = url_for(request.endpoint, **request.view_args)
-        return redirect(url_for('views.login', next=next_url))
+        return redirect(url_for('view_auth.login', next=next_url))
 
     create_database(app)
 

@@ -89,6 +89,7 @@ function getDayData() {
         type: "GET",
         dataType: "json",
         success: function(data){
+                console.log(data)
                 view_calls.innerText = data["payload"]["view_calls"];
                 api_calls.innerText = data["payload"]["api_calls"];
                 unique_users.innerText = data["payload"]["unique_users"];
