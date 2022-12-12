@@ -1,0 +1,10 @@
+Dear {{ user.username }},
+
+A new device near {{device.country}}, {{device.city}} logged into your account!
+
+If you trust this device you can ignore this e-mail.
+therwise you might want to change your password and contact our support team for further actions!
+
+Sincerely,
+
+The Urbanwaters Team

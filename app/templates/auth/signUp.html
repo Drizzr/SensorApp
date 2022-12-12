@@ -1,0 +1,76 @@
+{%extends "view-templates/base.html"%}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms/css/forms.css')}}">
+{% endblock %}
+{% block title %}
+    sign up
+{% endblock %}
+{% block header %}
+    <a class="back_button" href="{{url_for('views.landing')}}">
+        <img src="{{url_for('static', filename='base/images/arrow-down.png')}}"  width="44" alt="">                 
+    </a>
+{% endblock %}
+{% block content %}
+    <div class="form">
+        <h1>Sign Up</h1>
+        <form action="" method="post" novalidate>
+            
+            {{ form.hidden_tag() }}
+            
+            <input type="hidden" name="next" value="{{referrerRequest()}}"/>
+
+            <fieldset class="form-field">
+                {{ form.email.label }} <br>
+                {{ form.email(size=32) }} <br>
+                {% if form.email.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.email.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+
+            <fieldset class="form-field">
+                {{ form.name.label }} <br>
+                {{ form.name(size=32) }} <br>
+                {% if form.name.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.name.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+
+            <fieldset class="form-field">
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }} <br>
+                {% if form.password.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.password.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+            
+            <fieldset class="form-field">
+                {{ form.confirmPassword.label }}<br>
+                {{ form.confirmPassword(size=32) }} <br>
+                {% if form.confirmPassword.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.confirmPassword.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+            {{ form.submit() }}
+        </form>
+        <div> You already have an account? <a href="{{url_for('view_auth.login', next=referrerRequest())}}"> Login instead!</a> </div>
+    </div>
+    
+{% endblock %}
+{% block javascript %}
+{% endblock %}

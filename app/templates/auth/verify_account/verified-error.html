@@ -1,0 +1,14 @@
+{%extends "view-templates/base.html"%}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='verify/css/verify.css')}}">
+{% endblock %}
+{% block title %}
+    link expired
+{% endblock %}
+{% block headerButtons %}
+{% endblock %}
+{% block headerMenuButtons %}
+{% endblock %}
+{% block content %}
+    <h2>The link in this email expired. Please request a new one!</h2>
+{% endblock %}

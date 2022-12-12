@@ -1,0 +1,55 @@
+{%extends "view-templates/base.html"%}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms/css/forms.css')}}">
+{% endblock %}
+{% block title %}
+    Login
+{% endblock %}
+{% block header %}  
+    <a class="back_button" href="{{url_for('views.landing')}}">
+        <img src="{{url_for('static', filename='base/images/arrow-down.png')}}"  width="44" alt="">                 
+    </a>
+{% endblock %}
+{% block content %}
+    <div class="form">
+        <h1>Login</h1>
+        <form action="" method="post" novalidate>
+
+            {{ form.hidden_tag() }}
+            
+            <input type="hidden" name="next" value="{{referrerRequest()}}"/>
+
+            <fieldset class="form-field">
+                {{ form.email.label }} <br>
+                {{ form.email(size=32) }} <br>
+                {% if form.email.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.email.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+            
+
+            <fieldset class="form-field">
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }} <br>
+                {% if form.password.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.password.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+
+            {{ form.remember_me() }} {{ form.remember_me.label }} <br>
+            {{ form.submit() }}
+        </form>
+        <div> No account yet? <a href="{{url_for('view_auth.signUp', next=referrerRequest())}}"> Sign up instead!</a> </div>
+    </div>
+    
+{% endblock %}
+{% block javascript %}
+{% endblock %}

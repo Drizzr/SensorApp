@@ -1,0 +1,137 @@
+{%extends "view-templates/base.html"%}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms/css/forms.css')}}">
+{% endblock %}
+{% block title %}
+    register a new Sensor
+{% endblock %}
+{% block header %}  
+    <a class="back_button" href="/room/{{room.public_id}}">
+        <img src="{{url_for('static', filename='base/images/arrow-down.png')}}"  width="44" alt="">                 
+    </a>
+{% endblock %}
+{% block content %}
+    <div class="form">
+        <h1>register a new Sensor</h1>
+        <form action="" method="post" novalidate>
+
+            {{ form.hidden_tag() }}
+            
+            <input type="hidden" name="next" value="{{referrerRequest()}}"/>
+
+            <fieldset class="form-field">
+                {{ form.name.label }} <br>
+                {{ form.name(size=32) }} <br>
+                {% if form.name.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.name.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+            
+
+            <fieldset class="form-field">
+                <div class="flex flex-row flex-jc-sb input__valueset">
+                    <div class="flex flex-col input__value">
+                        {{ form.value1.label }} 
+                        {{ form.value1(size=32) }}
+                        {% if form.value1.errors %}
+                            <ul class="input__error_desc">
+                                <li id="description">{{ form.value1.description }}</li>
+                                {% for error in form.value1.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <ul class="input__error_desc">
+                                <li id="description">{{ form.value1.description }}</li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col input__unit">
+                        {{ form.unit1.label }} 
+                        {{ form.unit1(size=3) }}
+                        {% if form.unit1.errors %}
+                            <ul class="input__error_desc">
+                                {% for error in form.unit1.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-field">
+                <div class="flex  flex-row flex-jc-sb  input__valueset">
+                    <div class="flex flex-col input__value">
+                        {{ form.value2.label }}
+                        {{ form.value2(size=32) }}
+                        {% if form.value2.errors %}
+                            <ul class="input__error_desc">
+                                <li id="description">{{ form.value2.description }}</li>
+                                {% for error in form.value2.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <ul class="input__error_desc">
+                                <li id="description">{{ form.value2.description }}</li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col input__unit">
+                        {{ form.unit2.label }}
+                        {{ form.unit2(size=3) }}
+                        {% if form.unit2.errors %}
+                            <ul class="input__error_desc">
+                                {% for error in form.unit2.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-field">
+                <div class="flex  flex-row flex-jc-sb input__valueset">
+                    <div class="flex flex-col input__value">
+                        {{ form.value3.label }}
+                        {{ form.value3(size=32) }}
+                        {% if form.value3.errors %}
+                            <ul class="input__error_desc">
+                                <li id="description">{{ form.value3.description }}</li>
+                                {% for error in form.value3.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <ul class="input__error_desc">
+                                <li id="description">{{ form.value3.description }}</li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col input__unit">
+                        {{ form.unit3.label }} 
+                        {{ form.unit3(size=3) }}
+                        {% if form.unit3.errors %}
+                            <ul class="input__error_desc">
+                                {% for error in form.unit3.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+
+            {{ form.submit() }}
+        </form>
+    </div>
+    
+{% endblock %}
+{% block javascript %}
+{% endblock %}

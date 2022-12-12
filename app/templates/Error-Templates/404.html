@@ -1,0 +1,13 @@
+{%extends "view-templates/base.html"%}
+{% block title %}
+    "404 page not found"
+{% endblock %}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='error/css/error.css')}}">
+{% endblock %}
+{% block content %}
+    <div class="error_headline">
+        <h1>Ooops looks like this page does not exist 🧐💤</h1>
+    </div>
+{% endblock %}
+

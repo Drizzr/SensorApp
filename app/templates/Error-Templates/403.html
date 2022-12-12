@@ -1,0 +1,12 @@
+{%extends "view-templates/base.html"%}
+{% block title %}
+    "403 Forbidden"
+{% endblock %}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='error/css/error.css')}}">
+{% endblock %}
+{% block content %}
+    <div class="error_headline">
+        <h1>"This ip has been permanently banned by the admin! Please contact the support!"</h1>
+    </div>
+{% endblock %}

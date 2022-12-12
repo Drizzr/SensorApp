@@ -1,0 +1,22 @@
+.buttons {
+    > * {
+        padding:   0.5rem 1.5rem;
+        border: 0.15rem solid red;
+        border-radius: 1rem;
+        color: black;
+        transition: all 200ms ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+            background-color: red;
+            color: white;
+        }
+    }
+
+}
+
+.back_button {
+    > img {
+        transform: rotate(90deg);
+    }
+}

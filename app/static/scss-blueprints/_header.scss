@@ -1,0 +1,47 @@
+@use "_mixins.scss";
+
+.header {
+    > nav {
+        position: fixed;
+        padding-top: 1.0625rem;
+        padding-bottom: 0;
+        width: 100%;
+        top: 0;
+        z-index: 3;
+        background-color: white;
+    }
+
+    &__logo {
+        padding: 0 2rem;
+    }
+
+    &__home-link {
+        margin-right: 1.5rem;
+    }
+
+    &__buttons {
+        @include mixins.breaktpoint-down(medium) {
+            display: none;
+        }
+        margin-left: auto;
+
+        >*:last-child {
+            margin-right: 2rem;;
+        }
+    }
+
+    &__dropdown {
+        @include mixins.breaktpoint-down(medium) {
+            display: none;
+        }
+    }
+    
+    &__menu {
+        position: absolute;
+        display: none;
+    }
+}
+
+.content_container {
+    padding-top: 4.4rem;
+}

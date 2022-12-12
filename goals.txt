@@ -1,0 +1,40 @@
+#analytics for api calls
+#api call tracking user specific
+#parse user agent
+#customize admin page flask app-builder or charts 
+#date and time conversion
+#for global servertime use utc
+#frontend
+#how many entries send via ajax
+#(db models (data db parse to json)) db querys which is faster select joined DataSet
+#flask logging in database table relationship to user table
+#global timestamps auth and display ipos num format?
+#chartjs propper setup
+#js updates invalid date etc
+#unit input
+#connect to db form outside
+
+write documentation
+admin classes !!
+
+sensor models (make user able to choose between custom or predefined sensor models)
+dynamic chart admin dashboard
+
+language support
+uniform html json css layout !!1
+
+type check for sensor_id 
+move loging into utils
+work on flask admin
+find bug
+use jquery instead of plain js
+#add setup of admin roles to create role
+reset securtity key via admin panel
+delete get updates function
+
+#add delete cascade to all relationships
+cookie banner
+#define scope of tokens
+
+fork flask-login for serverside session -> merge with api verifi   nction
+use g for current_user

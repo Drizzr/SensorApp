@@ -1,0 +1,29 @@
+{%extends "view-templates/base.html"%}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='home/css/home.css')}}">
+{% endblock %}
+{% block title %}
+    Home
+{% endblock %}
+{% block navbarLinks%}
+    <a href="{{url_for('views.home')}}">Home</a>
+{% endblock %}
+{% block content %}
+    <div class="grid">
+        {% if not user.rooms %}
+            <div id="info_text" class="grid__element flex flex-ai-c">
+                <p>Register a new room to your personal smart-home system!</p>
+            </div>
+        {% endif %}
+        {% for room in user.rooms%}
+            <a href="/room/{{room.public_id}}" class="grid__element flex flex-ai-c">
+                <p>{{room.name}} <br>
+                    {{room.description}}</p>
+            </a>
+        {% endfor %}
+            <a href="{{url_for('views.registerRoom')}}" class="grid__element flex flex-ai-c">
+                <p>+</p>
+            </a>
+    </div>
+{% endblock %}
+

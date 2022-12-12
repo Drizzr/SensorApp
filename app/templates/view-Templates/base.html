@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta id="csrf_token" content="{{ csrf_token() }}">
+    {% block metaData %}
+        <meta id="landing_page_url" content="{{ url_for('views.landing')}}">
+    {% endblock %}
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='base/images/favicon-32x32.png')}}">
+    <link rel="mask-icon" href="{{ url_for('static', filename='base/images/favicon-32x32.png')}}" color="#000000">
+    {% block head_css %}
+    {% endblock %}
+    <title>{% block title %} Welcome to URBAN WATERS {% endblock %}</title>
+</head>
+<body>
+    {% block header %}
+        <header class="header">
+            <a id="btnHamburger" href="#" class="toggle hide-for-desktop">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+            <div class="menu-overlay has-fade"></div>
+            <nav id="navbar" class="flex flex-ai-c">
+                {% block branding%}
+                    <a href="{{ url_for('views.landing')}}" class="header__logo">
+                        <img src="{{ url_for('static', filename='base/images/logo.png')}}"  width="300" alt="URBAN WATERS">
+                    </a>
+                {% endblock %}
+                {% block navbarLinks%}
+                    {% if user.is_authenticated %} 
+                        <a class="header__home-link" href="{{url_for('views.home')}}">Home</a>
+                    {% endif %}
+                    <div class="dropdown-menus header__dropdown flex flex-row">
+                        <div id="dropdown_company">
+                            <a href="#" class="flex flex-ai-c">
+                                <p>Company</p> 
+                                <img src="{{url_for('static', filename='base/images/arrow-down.png')}}"  width="22" alt="">                 
+                            </a>
+                            <div class="content">
+                                <a href="#">About</a>
+                                <a href="#">Team</a>
+                                <a href="#">Blog</a>
+                                <a href="#">Careers</a>
+                            </div>
+                        </div>
+                        <div id="dropdown_products">
+                            <a href="#" class="flex flex-ai-c">
+                                <p>Products</p> 
+                                <img src="{{url_for('static', filename='base/images/arrow-down.png')}}"  width="22" alt="">                 
+                            </a>
+                            <div class="content">
+                                <a href="#">About</a>
+                                <a href="#">Team</a>
+                                <a href="#">Blog</a>
+                                <a href="#">Careers</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+                <div class="buttons header__buttons">
+                    {% block headerButtons %}
+                        {% if  user.is_authenticated and user.verified%} 
+                            <a id="logout_button">Logout</a>
+                        {% else %}
+                            <a href="{{ url_for('view_auth.login') }}">Login</a>
+                            <a href="{{ url_for('view_auth.signUp') }}">Sign Up</a>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+            </nav>
+            <div class="header__menu has-fade">
+                {% block headerMenuLinks %}
+                    <div class="dropdown-menus">
+                        <div>
+                            <a href="#">
+                                Company
+                            </a>
+                            <div class="content">
+                                <a href="#">Overview</a>
+                                <a href="#">Pricing</a>
+                                <a href="#">Marketplace</a>
+                                <a href="#">Features</a>
+                                <a href="#">Integrations</a>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="#">
+                                Products
+                            </a>
+                            <div class="content">
+                                <a href="#">About</a>
+                                <a href="#">Team</a>
+                                <a href="#">Blog</a>
+                                <a href="#">Careers</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+                <div class="buttons flex flex-col flex-ai-c">
+                    {% block headerMenuButtons %}
+                        {% if  user.is_authenticated and user.verified%} 
+                            <a id="logout_button">Logout</a>
+                        {% else %}
+                            <a href="{{ url_for('view_auth.login') }}">Login</a>
+                            <a href="{{ url_for('view_auth.signUp') }}">Sign Up</a>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+            </div>
+        </header>
+    {% endblock %}
+    <section class="content_container">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+            messages %} {% for category, message in messages %} {% if category ==
+            'error' %}
+            <div class="alert alert__error">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                {{message}}
+            </div>
+            {% else %}
+            <div class="alert alert__success">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                {{message}}
+            </div>
+            {% endif %} {% endfor %} {% endif %} {% endwith %}
+        {% block content %}
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident est necessitatibus placeat veritatis reprehenderit, tempore non iusto facilis laborum molestiae vitae tenetur, illo maiores fugiat, distinctio voluptatum laudantium consectetur voluptatibus.</p>
+        {% endblock %}
+    </section>
+    {% block javascript%}
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+        <script src="{{ url_for('static', filename='base/js/base.js')}}"></script>
+        <script src="https://kit.fontawesome.com/49557c575a.js" crossorigin="anonymous"></script>
+
+    {% endblock %}
+    </body>
+</html>

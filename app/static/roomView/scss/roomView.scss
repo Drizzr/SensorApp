@@ -1,0 +1,59 @@
+@use  "../../base/scss/base.scss";
+
+
+.sensor {
+
+    &__container {
+
+        > div, a {
+            background-color: beige;
+            border:1px solid black;
+            border-radius: 1rem;
+            padding: 1rem;
+            width: 100%;
+            
+    
+            > div > h2 {
+                font-weight: 600;
+            }
+    
+            &:not(#info_text):hover {
+                border-width: 2px;
+            }
+    
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+        }
+    }
+
+    &__values {
+        > p {
+            &:not(:first-child) {
+                margin-left: 0.5rem;
+            }
+        }
+
+        margin-right: 3rem;
+        
+    }
+}
+
+.room {
+
+    &__container {
+        margin: 0 2rem;
+    }
+
+    &__headline {
+        margin-bottom: 1rem;
+    }
+}
+
+
+#add {
+    padding: 0;
+    margin-top: 1rem;
+    width: 15%;
+    font-size: 2rem;
+}

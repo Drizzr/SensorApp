@@ -1,0 +1,31 @@
+@use  "../../base/scss/base.scss";
+
+.sensor {
+    
+    &_container {
+        margin: 3rem;
+        border: 0.15rem solid red;
+        border-radius: 1rem;
+    }
+    
+
+    &_headline {
+        margin: 1rem;
+    }
+
+    &_chart {
+        width: 60%;
+        border-radius: 1rem;
+        padding: 2rem;
+    }
+
+    &_lastUpdate {
+        margin-bottom: 1rem;
+        font-weight: 900;
+    }
+}
+
+.delete_button {
+    margin-left: auto;
+    float: right;
+}

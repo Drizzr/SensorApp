@@ -1,0 +1,61 @@
+{% extends "admin/master.html" %}
+
+{% block head_css %}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}">
+    <meta id="csrf_token" content="{{ csrf_token() }}">
+{% endblock %}
+{% block brand %}
+    <a class="navbar-brand" href="{{ admin_view.admin.url }}"><img src="{{ url_for('static', filename='base/images/favicon-32x32.png')}}" width="50" alt="URBAN WATERS">
+        {{ admin_view.admin.name }}</a>
+{% endblock %}
+{% block body %}
+        <div class="flex flex-jc-sb">
+            <h1>DASHBOARD</h1>
+            <a id="shutdown_button" class="flex felx-row felx-jc-sb">
+                <img width="30" src="{{ url_for('static', filename='base/images/skull-crossbones-solid.svg') }}" alt="">
+            </a>
+            {% for role in current_user.roles %}
+                {% if role.name == "Admin"%}
+                    
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="grid">
+            <div class="grid__element flex flex-ai-c flex-jc-c" id="new_account_panel">
+                <div>
+                    <p>New User Accounts</p>
+                    <h2 id="new-users"></h2>
+                </div>
+            </div>
+            <div class="grid__element flex flex-ai-c flex-jc-c"> 
+                <div>
+                    <p>View Calls Today</p>
+                    <h2 id="view-calls"></h2>
+                    <p>Api Calls Today</p>
+                    <h2 id="api-calls"></h2>
+                    <p>Unique Users Today</p>
+                    <h2 id="unique-users"></h2>
+                </div>
+            </div>
+            <div class="grid__element flex flex-ai-c flex-jc-c"> 
+                <div>
+                    <p>Total User-Accounts</p>
+                    <h2 id="total-users"></h2>
+                    <p>Total Sensors</p>
+                    <h2 id="total-sensors"></h2>
+                </div>
+            </div>
+        </div>
+        <div class="admin_chart flex flex-col flex-ai-c">
+            <canvas id="responsive_chart"></canvas>
+        </div>
+        <div class="admin_log" id="log-container">
+
+        </div>
+{% endblock %}
+{% block tail %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script type="text/javascript" src=" {{url_for('static', filename='admin/js/admin.js')}} "></script>
+{% endblock %}
+

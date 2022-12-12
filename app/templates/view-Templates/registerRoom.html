@@ -1,0 +1,54 @@
+{%extends "view-templates/base.html"%}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms/css/forms.css')}}">
+{% endblock %}
+{% block title %}
+    register a new Room
+{% endblock %}
+{% block header %}  
+    <a class="back_button" href="{{url_for('views.home')}}">
+        <img src="{{url_for('static', filename='base/images/arrow-down.png')}}"  width="44" alt="">                 
+    </a>
+{% endblock %}
+{% block content %}
+    <div class="form">
+        <h1>register a new Room</h1>
+        <form action="" method="post" novalidate>
+
+            {{ form.hidden_tag() }}
+            
+            <input type="hidden" name="next" value="{{referrerRequest()}}"/>
+
+            <fieldset class="form-field">
+                {{ form.name.label }} <br>
+                {{ form.name(size=32) }} <br>
+                {% if form.name.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.name.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+            
+
+            <fieldset class="form-field">
+                {{ form.description.label }}<br>
+                {{ form.description(cols="32", rows="4") }} <br>
+                {% if form.description.errors %}
+                    <ul class="input__error_desc">
+                        {% for error in form.description.errors %}
+                            <li class="input__errors">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </fieldset>
+
+            {{ form.submit() }}
+        </form>
+    </div>
+    
+{% endblock %}
+{% block javascript %}
+{% endblock %}
+

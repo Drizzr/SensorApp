@@ -1,0 +1,13 @@
+{%extends "view-templates/base.html"%}
+{% block title %}
+    401 unauthorized
+{% endblock %}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='error/css/error.css')}}">
+{% endblock %}
+{% block content %}
+    <div class="error_headline">
+        <h1>Ooops looks like you are not authorized to access this page 🫵👮‍♀️</h1>
+    </div>
+{% endblock %}
+

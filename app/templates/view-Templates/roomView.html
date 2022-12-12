@@ -1,0 +1,56 @@
+{%extends "view-templates/base.html"%}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='roomView/css/roomView.css')}}">
+{% endblock %}
+{% block metaData %}
+    {{super()}}
+    <meta id="room_id" content="{{room.public_id}}">
+{% endblock %}
+{% block title %}
+    {{room.name}}
+{% endblock %}
+{% block navbarLinks%}
+    <a href="{{url_for('views.home')}}">Home</a>
+{% endblock %}
+{% block content %}
+    <div class="room__container">
+        <div class="room__headline flex flex-ai-c">
+            <a class="back_button" href="{{url_for('views.home')}}">
+                <img src="{{url_for('static', filename='base/images/arrow-down.png')}}"  width="44" alt="">                 
+            </a>
+            <div>
+                <h1>{{room.name}}</h1>
+                <p>{{room.description}}</p>
+            </div>
+        </div>
+        <div class="sensor__container flex flex-col flex-ai-c">
+            <div id="info_text">
+                <p>Register a new room to your personal smart-home system!</p>
+            </div>
+            {% for sensor in room.sensors%}
+                <a href="/sensor/{{sensor.public_id}}" class="flex flex-jc-sb flex-ai-c">
+                    <div>
+                        <h2>{{sensor.name}}</h2>
+                        <p>{{sensor.public_id}}</p>
+                    </div>
+                    <div class="flex">
+                        <div class="sensor__values flex">
+                            {% for key in sensor.value_map %}
+                                <p id="{{sensor.public_id}}_{{key}}"></p>
+                            {% endfor %}
+                        </div>
+                        <p id="{{sensor.public_id}}_lastUpdate">No update yet!</p>
+                    </div>
+                    
+                </a>
+            {% endfor %}
+            <a id="add" href="/room/{{room.public_id}}/register-sensor" class="flex flex-jc-c">
+                <p>+</p>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript%}
+    {{super()}}
+    <script type="text/javascript" src="{{ url_for('static', filename='roomView/js/roomView.js')}}"></script>
+{% endblock %}

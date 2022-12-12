@@ -1,0 +1,17 @@
+@use  "../../base/scss/base.scss";
+@use "../../scss-blueprints/_grid.scss";
+
+.grid {
+    &__element {
+        &:not(#info_text):hover {
+            border-width: 2px;
+            background-color: lightgray;
+        }
+
+        &:last-child {
+            > * {
+                font-size: 2rem;
+            }
+        }
+    }
+}

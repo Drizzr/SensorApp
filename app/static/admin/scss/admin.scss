@@ -1,0 +1,19 @@
+
+@use "../../scss-blueprints/_grid.scss";
+@use "../../scss-blueprints/_flex.scss";
+
+.grid {
+    padding: 0;
+    grid-template-columns: auto auto auto;
+
+    &__element {
+        border: 0.15rem solid red;
+    }
+}
+
+.admin_chart {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 1rem;
+    border: 0.15rem solid red;
+}

@@ -1,0 +1,41 @@
+{%extends "view-templates/base.html"%}
+{% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='sensorView/css/sensorView.css')}}">
+{% endblock %}
+{% block metaData %}
+    {{super()}}
+    <meta id="sensor_id" content="{{sensor.public_id}}">
+{% endblock %}
+{% block title %}
+    {{sensor.name}}
+{% endblock %}
+{% block navbarLinks%}
+    <a href="{{url_for('views.home')}}">Home</a>
+{% endblock %}
+{% block content %}
+    <div class="sensor_container">
+        <div class="sensor_headline flex flex-ai-c flex-jc-sb">
+            <div class="flex flex-ai-c">
+                <a class="back_button" id="back_button" href="/room/{{room_id}}">
+                    <img src="{{url_for('static', filename='base/images/arrow-down.png')}}"  width="44" alt="">                 
+                </a>
+                <div>
+                    <h1>{{sensor.name}}</h1>
+                    <p>ID: {{sensor.public_id}}</p>
+                </div>
+            </div>
+            <a id="delete_button" class="buttons">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        </div>
+        <div class="flex flex-col flex-ai-c">
+            <canvas class="sensor_chart" id="sensor_chart"></canvas>
+            <p class="sensor_lastUpdate" id="lastUpdate">No update yet!</p>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript%}
+    {{super()}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='sensorView/js/sensorView.js')}}"></script>
+{% endblock %}
