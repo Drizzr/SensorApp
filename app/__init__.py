@@ -124,7 +124,10 @@ def create_app(developing=True):
         next_url = url_for(request.endpoint, **request.view_args)
         return redirect(url_for('view_auth.login', next=next_url))
 
-    create_database(app)
+    with app.app_context():
+        if not path.exists('app/' + app.config["DB_NAME"]):
+            db.create_all(app=app)
+            print('Created Database!')
 
     # the admin dashboard gets initialized
     admin = Admin(app, index_view=MyAdminIndexView(), template_mode="bootstrap4")
@@ -193,7 +196,4 @@ def create_app(developing=True):
     return app
     
     
-def create_database(app):
-    if not path.exists('app/' + app.config["DB_NAME"]):
-        db.create_all(app=app)
-        print('Created Database!')
+    

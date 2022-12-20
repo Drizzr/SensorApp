@@ -5,8 +5,6 @@ from .models import Device, Task
 from flask_mail import Message
 
 
-
-
 def launch_task(app, name, description, *args, **kwargs):
     rq_job = app.task_queue.enqueue('app.task.' + name, *args, **kwargs)
 
@@ -39,6 +37,7 @@ def get_ip_geo_loc(client_ip):
 
 
 def send_email(subject, sender, recipients, text_body, html_body, attachments=None):
+    
     app = create_app()
 
     with app.app_context():
