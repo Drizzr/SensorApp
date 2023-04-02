@@ -9,7 +9,7 @@ class Config(object):
     MOBILE_API_KEY = "12345678" #token_hex(24)
 
     # enter all e-mail addresses that should be connected to an admin account
-    ADMINS = ["your@email"]
+    ADMINS = ["your@email.com", "test@email.com"]
 
     # role name: scope description
     ROLES = {"Admin": "full granted access", 

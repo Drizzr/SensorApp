@@ -8,4 +8,6 @@ app = create_app() # intitialisation of the flask-app (c.f. /app/__init__.py fil
 def make_shell_context():
     return {'db': db, 'User': User, 'Log': Log, 'Message': Task, "Roles": Role}
 
-app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(debug=True)

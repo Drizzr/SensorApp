@@ -122,7 +122,7 @@ def signUp():
                             name=username,
                             password=generate_password_hash(password, 'sha256', 10),
                             disabled=False,
-                            locale=request.accept_languages.best_match(current_app.config['LANGUAGES']),
+                            #locale=request.accept_languages.best_match(current_app.config['LANGUAGES']),
                             )
             new_user.set_admin_role()
             new_user.set_role("User")
@@ -142,7 +142,6 @@ def signUp():
                         recipients = [new_user.email],
                         text_body=render_template("email/verfiy_account/verify_account.txt", user=user, verify_token=verify_token),
                         html_body=render_template("email/verfiy_account/verify_account.html", user=user, verify_token=verify_token),
-
                                     )
             
             response = make_response(redirect(url_for("view_auth.not_verified")))

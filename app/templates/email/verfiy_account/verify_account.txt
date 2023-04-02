@@ -2,7 +2,7 @@ Dear {{ user.username }},
 
 To verify your account click on the following link:
 
-{{ url_for('reset_password', verify_token=verify_token, _external=True) }}
+{{ url_for('view_auth.verify_account', verify_token=verify_token, _external=True) }}
 
 If you already authenticated your account you can ignore this message!
 
