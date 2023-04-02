@@ -1,15 +1,14 @@
 from datetime import datetime, timedelta
 from lib2to3.pgen2 import token
 from secrets import token_hex
-from urllib import response
 from flask import abort, jsonify, make_response, render_template, request, flash, redirect, current_app, url_for
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, login_required
 from app.models import User, Device, DayAnalytics
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from app.models.user import ExpiredToken
 from app.utils.constants.http_codes.http_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
-from app.utils.security.decorators import logoutRequired
+from app.utils.security.decorators import logoutRequired, verifiedRequired, notVerifiedRequired
 from app.utils.security.tools import createJwtToken
 from app.utils.tools import referrerRequest
 from app.utils.forms import LoginForm, SignUpForm
@@ -49,12 +48,12 @@ def login():
                 if check_password_hash(user.password, password):
                     client_ip = request.environ['REMOTE_ADDR']
                     ip_query = Device.query.filter_by(ip=client_ip).first()
+                    login_user(user, remember=True) if remember_me else login_user(user, remember=False)
                     if user not in ip_query.users:
                         ip_query.users.append(user)
                         db.session.commit()
                     if user.verified:
                         flash('Logged in successfully!', category='success')
-                        login_user(user, remember=True) if remember_me else login_user(user, remember=False)
                         current_app.task_queue.enqueue("app.task.send_email",  "send_email", 
                                     "sending login information", 
                                     "new_login", sender="noreply@urbanwaters.com",
@@ -65,7 +64,6 @@ def login():
                         return redirect(next_url)
                     else:
                         
-                        request_verify_token = createJwtToken(current_app.config["SECRET_KEY"], user, request_verify_token=True)
                         verify_token = createJwtToken(current_app.config["SECRET_KEY"], user, verify_token=True)[0]
 
                         print(verify_token)
@@ -78,7 +76,6 @@ def login():
 
                                 )
                         response = make_response(redirect(url_for("view_auth.not_verified")))
-                        response.set_cookie("x-request-verify-token", value=request_verify_token[0], expires=request_verify_token[1], httponly=True)
                         return response
                 else:
                     # returns error-message hiding the distinct cause of error
@@ -132,7 +129,8 @@ def signUp():
             db.session.add(new_user)
             db.session.commit()
 
-            request_verify_token = createJwtToken(current_app.config["SECRET_KEY"], new_user, request_verify_token=True)
+            login_user(new_user, remember=True)
+
             verify_token = createJwtToken(current_app.config["SECRET_KEY"], new_user, verify_token=True)[0]
             print(verify_token)
 
@@ -144,41 +142,15 @@ def signUp():
                         html_body=render_template("email/verfiy_account/verify_account.html", user=user, verify_token=verify_token),
                                     )
             
-            response = make_response(redirect(url_for("view_auth.not_verified")))
-            response.set_cookie("x-request-verify-token", value=request_verify_token[0], expires=request_verify_token[1], httponly=True)
-            return response
+            return redirect(url_for("views.auth.not_verified"))
         return redirect(f"/sign-up?next={next_url}")
     return render_template("auth/signUp.html", user=current_user, form=form)
 
 
 @view_auth.route('/not-verified/', methods=["GET"])
+@notVerifiedRequired
 def not_verified():
-    try:
-        request_verify_token = request.cookies.get("x-request-verify-token")
-        token_query = ExpiredToken.query.filter_by(token=request_verify_token).first()
-
-        if not token_query:
-            request_verify_data = jwt.decode(algorithms=["HS256"], jwt=request_verify_token, key=current_app.config["SECRET_KEY"],
-                                        options={"verify_exp": True})
-
-            if request_verify_data["scope"] == "request-verify-token":
-                user = User.query.filter_by(public_id=request_verify_data["public_id"]).first_or_404()
-
-                return render_template("auth/verify_account/not-verified.html", user=user, token=request_verify_token)
-
-            else:
-                abort(HTTP_404_NOT_FOUND)
-        else:
-            flash("Your verify-token expired. Please try to login again!")
-            return redirect(referrerRequest())
-
-    except jwt.ExpiredSignatureError as e:
-        flash("Your verify-token expired. Please try to login again!")
-        return redirect(referrerRequest())
-    except (KeyError, jwt.InvalidTokenError) as e:
-        print(e)
-        abort(HTTP_404_NOT_FOUND)
-
+    return render_template("auth/verify_account/not-verified.html", user=current_user)
 
 
 @view_auth.route('/verify-account/', methods=["GET"])
@@ -207,8 +179,8 @@ def verify_account():
 
                     db.session.add(new_expired_token)
 
-
-                    return render_template("auth/verify_account/verified.html", user=user)
+                    flash("your account has been verified!")
+                    return redirect(url_for("views.home"))
                 else:
                     abort(HTTP_404_NOT_FOUND)
             else:
@@ -217,7 +189,7 @@ def verify_account():
             abort(HTTP_401_UNAUTHORIZED)
     
     except jwt.ExpiredSignatureError as e:
-        return render_template("auth/verify_account/verfied-error.html")
+        return render_template("auth/verify_account/verified-error.html", user=current_user)
 
     except KeyError as e:
         print(e)
@@ -225,95 +197,27 @@ def verify_account():
 
 
 @view_auth.route('/verify-status', methods=["GET"])
+@login_required
 def check_verify_status():
-    
-    try:
-
-        request_verify_token = request.cookies.get("x-request-verify-token")
-
-        token_query = ExpiredToken.query.filter_by(token=request_verify_token).first()
-
-        if not token_query:
-
-            request_verify_data = jwt.decode(algorithms=["HS256"], jwt=request_verify_token, key=current_app.config["SECRET_KEY"],
-                                        options={"verify_exp": True})
-            
-            if request_verify_data["scope"] == "request-verify-token":
-                user = User.query.filter_by(public_id=request_verify_data["public_id"]).first_or_404()
-
-                response = make_response(jsonify({"message": "success", "verifed": user.verified}), HTTP_200_OK)
-
-                if user.verified:
-                    
-                    new_expired_token = ExpiredToken(
-                                user_id=user.id,
-                                token=request_verify_data,
-                                expiration_date=request_verify_data["exp"], # stored in utc-float timestamp
-                                type="request-verify-token"
-                    )
-
-                    db.session.add(new_expired_token)
-                    response.delete_cookie("x-request-verify-token")
-
-                return response
-            
-            else:
-                abort(HTTP_401_UNAUTHORIZED)
-        
-        else:
-            abort(HTTP_401_UNAUTHORIZED)
-
-    except Exception as e:
-        abort(HTTP_401_UNAUTHORIZED)
+    if current_user.verified:
+        flash("your account has been verified!")
+    return make_response(jsonify({"message": "success", "verified": current_user.verified}), HTTP_200_OK)
 
 
 @view_auth.route('/verify/new-link', methods=["POST"])
+@notVerifiedRequired
 def request_new_verify_link():
-    
-    try:
+    verify_token = createJwtToken(current_app.config["SECRET_KEY"], current_user, verify_token=True)[0]
 
-        request_verify_token = request.cookies.get("x-request-verify-token")
-
-        token_query = ExpiredToken.query.filter_by(token=request_verify_token).first()
-
-        if not token_query:
-            request_verify_data = jwt.decode(algorithms=["HS256"], jwt=request_verify_token, key=current_app.config["SECRET_KEY"],
-                                        options={"verify_exp": True})
-            
-            if request_verify_data["scope"] == "request-verify-token":
-                user = User.query.filter_by(public_id=request_verify_data["public_id"]).first_or_404()
-
-                verify_token = createJwtToken(current_app.config["SECRET_KEY"], user, verify_token=True)[0]
-
-                launch_task(current_app, "send_email", 
-                            "sending verification link", 
-                            "verify account", sender="noreply@urbanwaters.com",
-                            recipients = [user.email],
-                            text_body=render_template("email/verfiy_account/verify_account.txt", user=user, verify_token=verify_token),
-                            html_body=render_template("email/verfiy_account/verify_account.html", user=user, verify_token=verify_token),
+    launch_task(current_app, "send_email", 
+                    "sending verification link", 
+                    "verify account", sender="noreply@urbanwaters.com",
+                    recipients = [current_user.email],
+                    text_body=render_template("email/verfiy_account/verify_account.txt", user=current_user, verify_token=verify_token),
+                    html_body=render_template("email/verfiy_account/verify_account.html", user=current_user, verify_token=verify_token),
 
                                         )
 
-                new_expired_token = ExpiredToken(
-                                user_id=user.id,
-                                token=request_verify_data,
-                                expiration_date=request_verify_data["exp"], # stored in utc-float timestamp
-                                type="request-verify-token"
-                    )
-
-                db.session.add(new_expired_token)
-                
-                response = make_response(jsonify({"message": "success", "verifed": user.verified}), HTTP_200_OK)
-                new_request_verify_token = createJwtToken(current_app.config["SECRET_KEY"], user, request_verify_token=True)
-                response.set_cookie("x-request-verify-token", new_request_verify_token[0], expires=new_request_verify_token[1], httponly=True)
-
-                return make_response(jsonify({"message": "success", "verifed": "new link send to user-email"}), HTTP_201_CREATED)
+    print(verify_token)
+    return make_response(jsonify({"message": "success", "verifed": "new link send to user-email"}), HTTP_201_CREATED)
             
-            else:
-                abort(HTTP_401_UNAUTHORIZED)
-        
-        else:
-            abort(HTTP_401_UNAUTHORIZED)
-
-    except Exception as e:
-        abort(HTTP_401_UNAUTHORIZED)

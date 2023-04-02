@@ -62,7 +62,7 @@
                 {% endblock %}
                 <div class="buttons header__buttons">
                     {% block headerButtons %}
-                        {% if  user.is_authenticated and user.verified%} 
+                        {% if  user.is_authenticated %} 
                             <a id="logout_button">Logout</a>
                         {% else %}
                             <a href="{{ url_for('view_auth.login') }}">Login</a>
@@ -101,7 +101,7 @@
                 {% endblock %}
                 <div class="buttons flex flex-col flex-ai-c">
                     {% block headerMenuButtons %}
-                        {% if  user.is_authenticated and user.verified%} 
+                        {% if  user.is_authenticated%} 
                             <a id="logout_button">Logout</a>
                         {% else %}
                             <a href="{{ url_for('view_auth.login') }}">Login</a>
@@ -130,6 +130,11 @@
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident est necessitatibus placeat veritatis reprehenderit, tempore non iusto facilis laborum molestiae vitae tenetur, illo maiores fugiat, distinctio voluptatum laudantium consectetur voluptatibus.</p>
         {% endblock %}
     </section>
+    {% if user.is_authenticated and not user.verified %}
+        <a class="alert alert__error", href="{{url_for('view_auth.not_verified')}}">
+            Your account hasn't been verified yet! Click here to do so
+        </a>
+    {% endif %}
     {% block javascript%}
 
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

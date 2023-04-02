@@ -88,7 +88,7 @@ class UserView(ModelView):
     #inline_models = ['post', ]
 
     column_list = ["public_id", "email", "roles", "devices", "sensors", "rooms", "name", "expired_token", "password"]
-    form_columns = ["email", "devices", "rooms", "sensors", "name", "expired_token", "disabled", "roles"]
+    form_columns = ["email", "devices", "rooms", "sensors", "name", "expired_token", "disabled", "roles", "verified"]
     column_filters = ["devices", "rooms", "calls_per_date"]
     column_searchable_list = ['public_id', 'email']
     roles_can_edit = ["Admin", "Admin-Editor"]

@@ -176,3 +176,23 @@ def logoutRequired(function):
     return decorated
 
 
+def verifiedRequired(function):
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.verified : 
+            return redirect(referrerRequest())
+        else:
+            return function(*args, **kwargs)
+    return decorated
+
+
+def notVerifiedRequired(function):
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.verified:
+            print(1)
+            return redirect(referrerRequest())
+        else:
+        
+            return function(*args, **kwargs)
+    return decorated

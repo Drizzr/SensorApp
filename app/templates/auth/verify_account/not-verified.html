@@ -1,7 +1,6 @@
 {%extends "view-templates/base.html"%}
 {% block metaData %}
     {{ super() }}
-    <meta id="request_verfiy_token" content="{{ token }}">
     <meta id="landing_page_url" content="{{ url_for('views.landing')}}">
 {% endblock %}
 {% block head_css %}
@@ -15,15 +14,13 @@
 {% block headerMenuButtons %}
 {% endblock %}
 {% block content %}
-    <h2>Your account hasn't been verified yet! Please check your email-account. </h2>
-
-    <div class="buttons">
-        <a href="{{ url_for('view_auth.login') }}">Login</a>
+    <h2>Your account hasn't been verified yet! Please check your email-account.</h2>
+    <div class="buttons" id="new_verify_link_button">
+        <a>Request a new link</a>
     </div>
 {% endblock %}
 {% block javascript %}
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    {{ super() }}   
     <script type="text/javascript" src="{{ url_for('static', filename='verify/js/verify.js')}}"></script>
 {% endblock %}
 
