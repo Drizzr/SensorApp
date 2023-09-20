@@ -1,5 +1,5 @@
 # ![Bildschirmfoto 2022-10-01 um 12 34 02](https://user-images.githubusercontent.com/76044729/193405379-31b70901-9888-4733-a4bd-24691b49c3fc.png)
-A opensource smarthome-platform that monitors sensor-data coming from your devices!
+A opensource smarthome-platform that monitors sensor-data coming from your devices, built using Flask, scss and javascript!
 
 # Quick-Set-Up
 
